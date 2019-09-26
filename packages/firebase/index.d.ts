@@ -6228,12 +6228,12 @@ declare namespace firebase.firestore {
     experimentalTabSynchronization?: boolean;
 
     /**
-   * Whether to force enable persistence for the client. This cannot be used
-   * with `synchronizeTabs:true` and is primarily intended for use with Web
-   * Workers. Setting this to 'true' will enable persistence, but cause other
-   * tabs using persistence to fail.
-   */
-  experimentalForce?: boolean;
+     * Whether to force enable persistence for the client. This cannot be used
+     * with `synchronizeTabs:true` and is primarily intended for use with Web
+     * Workers. Setting this to 'true' will enable persistence, but cause other
+     * tabs using persistence to fail.
+     */
+    experimentalForce?: boolean;
   }
 
   export type LogLevel = 'debug' | 'error' | 'silent';

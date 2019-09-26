@@ -284,11 +284,10 @@ export class IndexedDbPersistence implements Persistence {
       this.indexManager,
       /*keepDocumentChangeLog=*/ this.allowTabSynchronization
     );
+    this.window = platform.window;
     if (platform.window && platform.window.localStorage) {
-      this.window = platform.window;
-      this.webStorage = this.window.localStorage;
+      this.webStorage = platform.window.localStorage;
     } else {
-      this.window = platform.window;
       this.webStorage = null;
       log.error(
         LOG_TAG,
