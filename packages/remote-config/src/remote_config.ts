@@ -158,11 +158,19 @@ export class RemoteConfig implements RemoteConfigType {
         });
 
         performance.mark('fetch-end');
-        performance.measure("total", 'fetch-start', 'fetch-end');
-        performance.measure("network", 'fetch-network-start', 'fetch-network-end');
-        performance.measure("storage", 'fetch-storage-start', 'fetch-storage-end');
+        performance.measure('total', 'fetch-start', 'fetch-end');
+        performance.measure(
+          'network',
+          'fetch-network-start',
+          'fetch-network-end'
+        );
+        performance.measure(
+          'storage',
+          'fetch-storage-start',
+          'fetch-storage-end'
+        );
 
-        console.log(performance.getEntriesByType("measure"));
+        console.log(performance.getEntriesByType('measure'));
 
         performance.clearMarks();
         performance.clearMeasures();
