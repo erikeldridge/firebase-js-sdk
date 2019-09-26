@@ -94,12 +94,15 @@ export class RetryingClient implements RemoteConfigFetchClient {
   ) {}
 
   async fetch(request: FetchRequest): Promise<FetchResponse> {
+    performance.mark('fetch-retry-start');
     const throttleMetadata = (await this.storage.getThrottleMetadata()) || {
       backoffCount: 0,
       throttleEndTimeMillis: Date.now()
     };
 
-    return this.attemptFetch(request, throttleMetadata);
+    const response = this.attemptFetch(request, throttleMetadata);
+    performance.mark('fetch-retry-end');
+    return response;
   }
 
   /**

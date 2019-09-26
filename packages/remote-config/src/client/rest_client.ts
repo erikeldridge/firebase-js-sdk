@@ -67,6 +67,7 @@ export class RestClient implements RemoteConfigFetchClient {
    * @throws a {@link ErrorCode.FETCH_STATUS} error if the service returns an HTTP error status.
    */
   async fetch(request: FetchRequest): Promise<FetchResponse> {
+    performance.mark('fetch-rest-start');
     const [installationId, installationToken] = await Promise.all([
       this.firebaseInstallations.getId(),
       this.firebaseInstallations.getToken()
@@ -170,7 +171,7 @@ export class RestClient implements RemoteConfigFetchClient {
         httpStatus: status
       });
     }
-
+    performance.mark('fetch-rest-end');
     return { status, eTag: responseEtag, config };
   }
 }

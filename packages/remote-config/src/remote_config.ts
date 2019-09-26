@@ -129,6 +129,9 @@ export class RemoteConfig implements RemoteConfigType {
    * {@link DEFAULT_FETCH_TIMEOUT_SECONDS}.
    */
   async fetch(): Promise<void> {
+    performance.clearMarks();
+    performance.clearMeasures();
+    performance.mark('fetch-start');
     return new Promise(async (resolve, reject) => {
       // Aborts the request after the given timeout, causing the fetch call to
       // reject with an AbortError.
@@ -153,6 +156,16 @@ export class RemoteConfig implements RemoteConfigType {
           cacheMaxAgeMillis: this.settings.minimumFetchIntervalMillis,
           signal: abortSignal
         });
+
+        performance.mark('fetch-end');
+        performance.measure("total", 'fetch-start', 'fetch-end');
+        performance.measure("network", 'fetch-network-start', 'fetch-network-end');
+        performance.measure("storage", 'fetch-storage-start', 'fetch-storage-end');
+
+        console.log(performance.getEntriesByType("measure"));
+
+        performance.clearMarks();
+        performance.clearMeasures();
 
         await this._storageCache.setLastFetchStatus('success');
         resolve();

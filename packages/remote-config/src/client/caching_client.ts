@@ -74,6 +74,7 @@ export class CachingClient implements RemoteConfigFetchClient {
   }
 
   async fetch(request: FetchRequest): Promise<FetchResponse> {
+    performance.mark('fetch-cache-start');
     // Reads from persisted storage to avoid cache miss if callers don't wait on initialization.
     const [
       lastSuccessfulFetchTimestampMillis,
@@ -117,7 +118,7 @@ export class CachingClient implements RemoteConfigFetchClient {
     }
 
     await Promise.all(storageOperations);
-
+    performance.mark('fetch-cache-end');
     return response;
   }
 }
