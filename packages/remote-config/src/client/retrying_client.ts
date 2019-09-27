@@ -100,9 +100,10 @@ export class RetryingClient implements RemoteConfigFetchClient {
       throttleEndTimeMillis: Date.now()
     };
 
-    const response = this.attemptFetch(request, throttleMetadata);
-    performance.mark('fetch-retry-end');
-    return response;
+    return this.attemptFetch(request, throttleMetadata).then(response => {
+      performance.mark('fetch-retry-end');
+      return response;
+    });
   }
 
   /**

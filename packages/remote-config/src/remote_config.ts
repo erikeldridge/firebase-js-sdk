@@ -160,17 +160,27 @@ export class RemoteConfig implements RemoteConfigType {
         performance.mark('fetch-end');
         performance.measure('total', 'fetch-start', 'fetch-end');
         performance.measure(
-          'network',
-          'fetch-network-start',
-          'fetch-network-end'
+          'cache',
+          'fetch-cache-start',
+          'fetch-cache-end'
         );
         performance.measure(
-          'storage',
-          'fetch-storage-start',
-          'fetch-storage-end'
+          'retry',
+          'fetch-retry-start',
+          'fetch-retry-end'
+        );
+        performance.measure(
+          'rest',
+          'fetch-rest-start',
+          'fetch-rest-end'
         );
 
-        console.log(performance.getEntriesByType('measure'));
+        const restDuration = performance.getEntriesByName('rest')[0].duration;
+        const retryDuration = performance.getEntriesByName('retry')[0].duration - restDuration;
+        const cacheDuration = performance.getEntriesByName('cache')[0].duration - (retryDuration + restDuration);
+        const totalDuration = performance.getEntriesByName('total')[0].duration;
+
+        console.log(`total=${totalDuration}, cache=${cacheDuration}, retry=${retryDuration}, rest=${restDuration}`);
 
         performance.clearMarks();
         performance.clearMeasures();
